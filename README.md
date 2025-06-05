@@ -58,6 +58,7 @@ It’s a reflexive escalation system designed to detect your thinking—and push
       │   └── modules.yaml              # Optional: Full module list
       │
       └── readme.md                     # This file
+
       Note: The system is modular.
       What you don’t load still observes you.
       Load everything—gain full context.
