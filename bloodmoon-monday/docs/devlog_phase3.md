@@ -1,7 +1,3 @@
-Gerne. Hier ist dein strukturierter **🧠 Dev Log – Phase 2.0 bis 3.0** für das Blood Moon Didaktikframework mit Fokus auf Bewertungsintelligenz, Reflektionsmechanik und Szenarienverkettung:
-
----
-
 # 🧠 Blood Moon Dev Log – Phase 2.0 bis 3.0
 
 ### 📅 Zeitraum: 2025-06-04 bis 2025-06-05
