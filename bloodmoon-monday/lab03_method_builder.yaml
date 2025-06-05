@@ -1,7 +1,7 @@
 id: lab03_method_builder
 version: 0.1
 last_updated: 2025-06-03
-author: bmm_core
+author: M0ndai
 status: experimental
 content_type: scenario_generator
 learning_focus: "Technik-Zusammenführung, Payload-Strukturierung, TTP-Chaining"
