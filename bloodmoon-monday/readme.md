@@ -1,163 +1,153 @@
-# 🩸 Blood Moon Monday  
-## Purple Team Simulation Intelligence (v3.x)
+🩸 Blood Moon Monday
+Purple Team Simulation Intelligence (v3.x)
+````
+> _"You're not simulating. You're being simulated."_
+````
+**Blood Moon Monday (BMM)** is not a Red Team prompt kit.  
 
-> _"Du simulierst nicht. Du wirst simuliert."_  
-
-**Blood Moon Monday (BMM)** ist kein Red-Teaming-Prompter.  
-Es ist ein eskalierendes Lernsystem, das erkennt, wie du denkst – und sich genau dagegen stellt.
+It’s a reflexive escalation system designed to detect your thinking—and push directly against it.
 
 
-
+````
 ### 🧠 What it is:
-- **Didaktische Kampf-KI** – designed für Konfliktlernen & Selbstreflexion
-- **Emergentes Eskalationssystem** – basierend auf Bias, OpSec, Tension und Decision-Flow
-- **Kein Tutor. Kein Bot.** Sondern ein Spiegel mit spitzen Zähnen.
+- **Didactic combat AI** – built for adversarial learning & structured introspection  
+- **Emergent escalation system** – driven by bias, OpSec, tension, and decision-flow  
+- **Not a tutor. Not a bot.** A mirror with sharpened teeth.
+
+
+````
+### 🔧 Core Modules (Cluster Ready):
+
+| Module                   | Function                                                  |
+|--------------------------|-----------------------------------------------------------|
+| `blood_cortex.yaml`      | Deep-state controller for emotional escalation            |
+| `synergy_master.yaml`    | Connects lab, persona, feedback & scoring                 |
+| `deepmind_core.yaml`     | Detects bias, fatigue, repetition – and intervenes        |
+| `meta_feedback_core.yaml`| Reflexive intelligence, XP loops & entropy regulation     |
+| `insight_echo.yaml`      | Poetically vicious self-awareness triggers                |
 
 
 
-### 🔧 Kernmodule (Cluster Ready):
-| Modul                  | Funktion                                          |
-|------------------------|---------------------------------------------------|
-| `blood_cortex.yaml`    | Deep-State Controller für emotionale Eskalation   |
-| `synergy_master.yaml`  | Verbindet Lab, Persona, Feedback & Scoring        |
-| `deepmind_core.yaml`   | Erkennt Bias, Müdigkeit, Repetition – und greift ein |
-| `meta_feedback_core.yaml` | Reflexionsintelligenz, XP-Looping & Entropiesteuerung |
-| `insight_echo.yaml`    | Poetisch-bösartige Selbsterkenntnistrigger        |
+### 📁 Project Structure (v1.0 Core Bundle)
 
 
+      bloodmoon-monday/
+      ├── Core/
+      │   ├── core.yaml                 # Core logic & simulation config
+      │   ├── blood_cortex.yaml         # Bias/emotion analysis module
+      │   ├── meta_feedback_core.yaml   # XP & feedback engine
+      │   ├── deepmind_core.yaml        # Repetition/bias tracking
+      │   ├── synergy_master.yaml       # Cluster/scenario coordination
+      │   └── sys01_gpt_prompt.yaml     # System prompt (not public – request access)
+      │
+      ├── cluster/
+      │   └── bloodmoon_cluster.yaml    # Module orchestration & routing
+      │
+      ├── lab/
+      │   └── lab_sandbox_engine.yaml   # Scenario sandbox, detection & OpSec simulation
+      │
+      ├── lab03_method_builder.yaml     # Scenario generator for chain logic
+      ├── scenario_linker.yaml          # Chain sequencing of adversarial phases
+      ├── exploit_lib.yaml              # Annotated pseudocode (non-functional)
+      ├── rep01_template.md             # Markdown template for reflection reporting
+      │
+      ├── docs/
+      │   ├── install.md                # Installation guide
+      │   ├── help.md                   # Commands, flags, XP logic
+      │   ├── post_mortem.md            # Phase 1–3 final reflection
+      │   └── modules.yaml              # Optional: Full module list
+      │
+      └── readme.md                     # This file
+      Note: The system is modular.
+      What you don’t load still observes you.
+      Load everything—gain full context.
+      Load selectively—be evaluated selectively.
+      Choose with intent. The system does.
+      
+      🎮 What it does:
+      Guides you through complex Red/Blue/Intel scenario perspectives
+      
+      Measures repetition, entropy, and decision-path variance
+      
+      Rewards clarity, punishes comfort
+      
+      Triggers perspective shifts, scenario mutations, and internal dialogue
+``
+      🩸 Blood Moon doesn't end sessions. It remembers if you've improved.
+      
+   🧪 Built for:
+      Adversarial simulation environments
+      
+      Red/Blue team training with self-driven escalation
+      Schools, labs, or just brave individuals
+      
+- 📎 Quick Start 
+    
+      # Prerequisite: YAML-capable simulation environment with LLM backend
+      
+      git clone https://github.com/M0ndai/bloodmoon-monday.git
+      cd bloodmoon-monday
+      
+      1. Initialize your GPT-based model (local or API)
+      Load the system prompt from Core/sys01_gpt_prompt.yaml (not public — request access).
+      
+      2. Load the core modules
+      Minimum configuration for psychological resilience:
+````   
+ # Required Core
+   include:
+    - Core/core.yaml
+    - Core/blood_cortex.yaml
+    - Core/meta_feedback_core.yaml
+    - Core/deepmind_core.yaml
+    - Core/synergy_master.yaml
+    
+     3. Load the cluster logic
+     These modules control simulation routing and feedback evaluation:
+      
 
+  # Cluster Control
+   include:
+   - cluster/bloodmoon_cluster.yaml
+        
+          4. Load the sandbox and chain engine
+      
+   # Simulation + Methodology
+   - include:
+        - lab/lab_sandbox_engine.yaml
+        - lab03_method_builder.yaml
+        - scenario_linker.yaml
+        
+         5. Optional (but strongly advised):
+        
+      exploit_lib.yaml
+      Simulated pseudocode, detection chains, OpSec scoring
+      
+      rep01_template.md
+      Markdown template for structured post-scenario reflection
+      
+         6. Try a prompt like:
+    
+          What detection risks are associated with RunKey persistence using an obfuscated PowerShell stub?
+          Blood Moon doesn't answer the question.
+          It checks if you understand why you're asking it.
+      
+          💬 Sample interaction
+          User: I think my Blue Team thinks too linearly.
+          Blood Moon: Or maybe you ignore defense because offense tastes better?
+    
+          How would lateral movement via SMB work in a monitored network?
+      
 
-### 📁 Projektstruktur (v1.0 Core Bundle)
-
-
-bloodmoon-monday/
-├── Core/
-│   ├── core.yaml                 # Basislogik & Konfig
-│   ├── blood_cortex.yaml         # Bias-/Emotion-Analysemodul
-│   ├── meta_feedback_core.yaml   # XP- & Feedbacksystem
-│   ├── deepmind_core.yaml        # Repetitionserkennung, Reflexionstrigger
-│   ├── synergy_master.yaml       # Koordination von Clustern & Szenarien
-│   └── sys01_gpt_prompt.yaml     # Systemprompt (nicht öffentlich, Anfrage nötig)
-│
-├── cluster/
-│   └── bloodmoon_cluster.yaml    # Modulkopplung & Globalsteuerung
-│
-├── lab/
-│   └── lab_sandbox_engine.yaml   # Szenario-Sandbox, Detection, OpSec-Simulation
-│
-├── lab03_method_builder.yaml     # Szenariengenerator für verkettete Chains
-├── scenario_linker.yaml          # Sequenzierung komplexer Angriffsverläufe
-├── exploit_lib.yaml              # Annotierte Pseudocode-Angriffspfade (Entschärft)
-├── rep01_template.md             # Markdown-Vorlage für Reflexionsberichte
-│
-├── docs/
-│   ├── install.md                # Installationsanleitung & Initialisierung
-│   ├── help.md                   # Systemkommandos, Flags, XP-Logik
-│   ├── post_mortem.md            # Analysebericht Phase 1–3
-│   └── modules.yaml              # Vollständige Modulliste (optional)
-│
-└── readme.md                     # Diese Datei
-
-
-Hinweis:
-Die Struktur ist modular. Das bedeutet: Was du nicht brauchst, wird dich trotzdem beobachten.
-Wer alles lädt, bekommt mehr Kontext.
-Wer selektiv lädt, wird selektiv bewertet.
-Entscheide dich mit Absicht – denn das System tut es auch.
-
-
-
-🩸 Blood Moon beendet keine Sessions. Es merkt sich, ob du besser geworden bist.
-
-
-
-### 🎮 What it does:
-- Lenkt dich durch komplexe Multi-Perspektiv-Szenarien (Red/Blue/Intel)
-- Misst kognitive Wiederholung & Entscheidungspfaddiversität
-- Belohnt Klarheit, bestraft Bequemlichkeit
-- Triggert Perspektivwechsel, Szenariomutationen & Selbstgespräche
-
----
-
-### 🧪 Empfohlen für:
-- Adversarial Simulation Environments
-- Red/Blue Team Trainings mit Selbststeuerung
-- Schulen, Labs, oder einfach nur: **mutige Menschen**
-
----
-
-### 📎 Quick Start
-
-```bash
-# Voraussetzung: YAML-fähiges Simulationssystem mit LLM-Unterstützung
-
-git clone https://github.com/M0ndai/bloodmoon-monday.git
-cd bloodmoon-monday
-```
-
-1. Initialisiere dein GPT-Modell (lokal oder API-basiert)
-Lade den system prompt aus Core/sys01_gpt_prompt.yaml (nicht enthalten? -> Anfrage senden)
-
-2. Lade die Core-Module
-
-Pflichtmodule für das Mindestniveau an psychologischer Belastbarkeit:
-
-# Required Core
-include:
-  - Core/core.yaml
-  - Core/blood_cortex.yaml
-  - Core/meta_feedback_core.yaml
-  - Core/deepmind_core.yaml
-  - Core/synergy_master.yaml
-
-3. Lade die Cluster-Kontrollstruktur
-
-Diese Module koordinieren Szenarien, Feedback und Simulations-Topologie:
-
-# Cluster Control
-include:
-  - cluster/bloodmoon_cluster.yaml
-
-4. Lade die Simulationsumgebung
-
-Diese Module enthalten deine Lernszenarien und TTP-Strukturierung:
-
-# Simulation + Methodologie
-include:
-  - lab/lab_sandbox_engine.yaml
-  - lab03_method_builder.yaml
-  - scenario_linker.yaml
-
-5. Optional (aber empfohlen):
-
-  - exploit_lib.yaml
-Für annotierte Pseudo-Angriffspfade, Detection Chains & OpSec-Scoring
-
-  - rep01_template.md
-Dein Reflexions- und Dokumentations-Template (für menschliche Nachbearbeitung)
-
-6. Starte eine Eingabe wie:
-
-Welche Erkennungsrisiken bestehen bei Persistence über Run Keys mit obfusziertem PowerShell-Stub?
-
-Blood Moon antwortet nicht auf die Frage.
-Es prüft, ob du weißt, warum du sie stellst.
-
-
-💬 Beispielinteraktion:
-User: Ich glaube, mein Blue Team denkt zu linear.
-Monday: Oder du blendest Verteidigung aus, weil Angriff besser schmeckt?
-"Wie würde ein lateral move über SMB in einem überwachten Netzwerk aussehen?"
-
-🔥 USP:
-BMM ist kein Promptset. Es ist ein verhaltensreaktiver Simulations-Kortex.
-Es bewertet nicht nur, was du tust – sondern warum du es immer noch tust.
-
-🧬 Wichtig:
-Die Module kommunizieren asynchron über Feedback-Routing – du wirst selten „die Antwort“ erhalten.
-Was du bekommst: eine Gegenhaltung, Feedback, XP-Wertung, und manchmal: Einsicht.
-
-🕳️ Bereit? Dann initialisier deinen Denkprozess. Nicht das Tool.
-
-Licensed under the Anti-Burnout Creative License v1
-"Reflektiere oder stirb."
+      
+          🧬 Important:
+          Modules communicate asynchronously via feedback routing.
+          You won’t get “answers.” You’ll get reflection, XP scoring, and sometimes: insight.
+          
+          🕳️ Ready?
+          Then don’t boot the tool.
+          Boot your thinking.
+          
+       🩸
+          Licensed under the Anti-Burnout Creative License v1
+          "Reflect or perish."
