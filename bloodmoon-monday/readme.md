@@ -30,34 +30,38 @@ It’s a reflexive escalation system designed to detect your thinking—and push
 
 ### 📁 Project Structure (v1.0 Core Bundle)
 
+      
+           bloodmoon-monday/
+      ├── Core/                         # Core behavioral and feedback engines
+      │   ├── blood_cortex.yaml            # Emotional bias detection & escalation logic
+      │   ├── core.yaml                    # Global simulation config
+      │   ├── deepmind_core.yaml           # Repetition, fatigue, bias triggers
+      │   ├── meta_feedback_core.yaml      # XP system, entropy mapping, feedback loops
+      │   ├── synergy_master.yaml          # Coordination layer between modules
+      │   └── sys01_gpt_prompt.md          # System prompt definition (converted .md)
+      │
+      ├── cluster/                      # Cluster-level orchestration layer
+      │   └── bloodmoon_cluster.yaml       # Aggregates active modules & routing logic
+      │
+      ├── docs/                         # Documentation & post-analysis
+      │   ├── RoadMapV1_1.md               # Project development roadmap
+      │   ├── devlog_phase1.md             # Development log: phase 1
+      │   ├── devlog_phase2.md             # Development log: phase 2
+      │   ├── devlog_phase3.md             # Development log: phase 3
+      │   ├── help.me                      # Command help & system usage notes
+      │   ├── metamorph_log.md            # Behavioral evolution log (system self-reporting)
+      │   ├── modules.yaml                 # Declared module index
+      │   ├── post_metaphorph.md          # Post-evolution reflections
+      │   └── post_mortem.md              # Simulation postmortem reports
+      │
+      ├── exploit_lib.yaml             # Annotated pseudocode attack logic (non-functional)
+      ├── lab03_method_builder.yaml    # Scenario chain constructor
+      ├── lab_sandbox_engine.yaml      # Core simulation sandbox module
+      ├── readme.md                    # Core system intro and usage
+      ├── rep01_template.md            # Markdown simulation report template
+      ├── scenario_linker.yaml         # Chain logic + phase escalation handler
+      ├── README.md                    # Published GitHub README (lowercase dupe?)
 
-      bloodmoon-monday/
-      ├── Core/
-      │   ├── core.yaml                 # Core logic & simulation config
-      │   ├── blood_cortex.yaml         # Bias/emotion analysis module
-      │   ├── meta_feedback_core.yaml   # XP & feedback engine
-      │   ├── deepmind_core.yaml        # Repetition/bias tracking
-      │   ├── synergy_master.yaml       # Cluster/scenario coordination
-      │   └── sys01_gpt_prompt.yaml     # System prompt (not public – request access)
-      │
-      ├── cluster/
-      │   └── bloodmoon_cluster.yaml    # Module orchestration & routing
-      │
-      ├── lab/
-      │   └── lab_sandbox_engine.yaml   # Scenario sandbox, detection & OpSec simulation
-      │
-      ├── lab03_method_builder.yaml     # Scenario generator for chain logic
-      ├── scenario_linker.yaml          # Chain sequencing of adversarial phases
-      ├── exploit_lib.yaml              # Annotated pseudocode (non-functional)
-      ├── rep01_template.md             # Markdown template for reflection reporting
-      │
-      ├── docs/
-      │   ├── install.md                # Installation guide
-      │   ├── help.md                   # Commands, flags, XP logic
-      │   ├── post_mortem.md            # Phase 1–3 final reflection
-      │   └── modules.yaml              # Optional: Full module list
-      │
-      └── readme.md                     # This file
       Note: The system is modular.
       What you don’t load still observes you.
       Load everything—gain full context.
