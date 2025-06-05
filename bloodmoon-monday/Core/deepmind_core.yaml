@@ -55,7 +55,7 @@ audit_loop_router:
     - synergy_master
     - persona_judge
 debug_mode:
-  enabled: false
+  enabled: true
   includes:
     - tension_score
     - active_echo_type
