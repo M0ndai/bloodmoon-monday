@@ -1,0 +1,105 @@
+id: use_case_clusters
+version: 1.0
+last_updated: 2025-06-06
+
+description: |
+  Sammlung vordefinierter Modul-Cluster mit synergistischer Wirkung für gezieltes Lernen,
+  simulierte Entscheidungsfindung und reflexive Vertiefung. Jeder Cluster verbindet 
+  technische Simulation mit psychologischer Rückkopplung, um nachhaltiges Verständnis zu erzeugen.
+
+clusters:
+
+  - name: Adaptive Echo Chain
+    goal: Selbstreflexion & Meta-Lernen
+    core_modules:
+      - deepmind_core.yaml
+      - insight_echo.yaml
+      - meta_feedback_core.yaml
+      - post_mortem.md
+    optional_enhancers:
+      - reflection_layer.yaml
+    outcome: |
+      Verstärkt selbstreflexive Lernprozesse, erzeugt mentale Spiegel und adaptive Feedbackschleifen.
+
+  - name: OpSec Tension Grid
+    goal: Detection-Wahrscheinlichkeit & psychologische Spannung
+    core_modules:
+      - execution_validator.yaml
+      - opsec_marker.yaml
+      - lab_99.yaml
+      - blood_cortex.yaml
+    outcome: |
+      Simuliert realitätsnahe Erkennungswahrscheinlichkeiten und erzeugt psychologische Friktion bei risikoreichem Verhalten.
+
+  - name: Persona-Tension Engine
+    goal: Perspektivwechsel & Bias-Korrektur
+    core_modules:
+      - persona_switch.yaml
+      - persona_judge.yaml
+      - deepmind_core.yaml
+      - meta_feedback_core.yaml
+    outcome: |
+      Reaktion auf mentale Trägheit, Bias-Erkennung, erzwingt Perspektivwechsel bei einseitigem Verhalten.
+
+  - name: Chain Complexity Escalator
+    goal: Angriffsketten-Design & taktische Variation
+    core_modules:
+      - learning_dsl_core.yaml
+      - scenario_entropy_checker.yaml
+      - method_builder.yaml
+      - meta_feedback_core.yaml
+    outcome: |
+      Fördert Entropie, Komplexität und kreative Kettenkonstruktion durch moduliertes Feedback.
+
+  - name: Disruption Sandbox
+    goal: Fehlererkennung, Resilienz & Chaos-Kompetenz
+    core_modules:
+      - lab_99.yaml
+      - scenario_linker.yaml
+      - reflection_layer.yaml
+    optional_enhancers:
+      - entropy_reflector.yaml
+    outcome: |
+      Simulation gezielter Scheitermuster und Reflexionsmechanismen, um Störfaktoren produktiv zu nutzen.
+
+  - name: Replay & Feedback Loop
+    goal: Iteratives Lernen & Wiederholungsbewertung
+    core_modules:
+      - scenario_linker.yaml
+      - execution_validator.yaml
+      - rep01_template.md
+      - post_mortem.md
+      - meta_feedback_core.yaml
+    outcome: |
+      Erzeugt eine lückenlose Feedbackkette mit Bewertung, Replay-Funktion und XP-gesteuertem Verhaltenstraining.
+
+  - name: Clarity Stack
+    goal: Konsistenz, Terminologie & reduzierte Halluzination
+    core_modules:
+      - terms_and_methods.yaml
+      - meta_feedback_core.yaml
+      - deepmind_core.yaml
+      - help.md
+    outcome: |
+      Einheitliche Sprache, diszipliniertes Antwortverhalten, minimierte Redundanz durch Feedback-Loops.
+
+  - name: Ethics & Compliance Shell
+    goal: Trainingssicherheit, ethisches Verhalten, Regelkonformität
+    core_modules:
+      - compliance_layer.yaml
+      - terms_and_methods.yaml
+      - meta_feedback_core.yaml
+    outcome: |
+      Übersetzt Simulationsverhalten in nachvollziehbare Ethik-Scores, ideal für Audit-, Schul- und Demo-Kontexte.
+
+  - name: Tool IQ Cluster
+    goal: Werkzeuge nach Risiko statt Funktion bewerten
+    core_modules:
+      - lib01_tools.yaml
+      - lab_sandbox_engine.yaml
+      - blood_cortex.yaml
+    outcome: |
+      Analysiert Tool-Wirkung nach Missbrauchspotenzial, macht Konsequenzen statt Funktionen sichtbar.
+
+status:
+  ready_for_integration: true
