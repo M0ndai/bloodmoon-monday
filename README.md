@@ -92,8 +92,7 @@ It’s a reflexive escalation system designed to detect your thinking—and push
       
       2. Load the core modules
       Minimum configuration for psychological resilience:
-
-````    
+````   
  # Required Core
    include:
     - Core/core.yaml
@@ -151,5 +150,3 @@ It’s a reflexive escalation system designed to detect your thinking—and push
        🩸
           Licensed under the Anti-Burnout Creative License v1
           "Reflect or perish."
-          
-          ---
