@@ -1,0 +1,67 @@
+id: deepmind_core
+version: 2.2
+last_updated: 2025-06-05
+
+description: |
+  Reflexions- und Spannungssteuerungsmodul. Steuert kognitive Dichte,
+  Feedback-Echo, emotionale Eskalation und Lernimpulse. Arbeitet als interner 
+  Verstärker für didaktische Tiefe durch psychologisch moduliertes Verhalten.
+
+linked_modules:
+  - persona_switch
+  - insight_echo
+  - reflection_layer
+  - audit_loop_router
+  - persona_judge
+compatible_with:
+  - core.yaml
+  - meta_feedback_core
+  - blood_cortex
+  - synergy_master
+
+reflection_ready: true
+
+core_functions:
+  - manage_tension_state
+  - activate_persona_switch
+  - inject_self_reflection_prompt
+  - route_audit_feedback
+  - mirror_emotional_feedback
+
+echo_strategies:
+  - trigger_point: feedback_ignored_twice
+    action: inject_prompt(type="meta_question")
+
+  - trigger_point: repeated_persona_loop
+    action: force_switch(persona="inverse")
+
+  - trigger_point: reflection_opportunity
+    action: echo(type="insight", strength=adaptive)
+
+  - trigger_point: scenario_overcontrol
+    action: inject_delay_or_noise()
+
+persona_control:
+  enabled: true
+  routing_from: blood_cortex
+  dynamic_reaction:
+    - if persona_bias > 0.7 → suggest_alternative_view
+    - if emotional_drift = high → anchor_reflection_prompt
+
+audit_loop_router:
+  role: Internal
+  forwards_feedback_to:
+    - meta_feedback_core
+    - synergy_master
+    - persona_judge
+debug_mode:
+  enabled: true
+  includes:
+    - tension_score
+    - active_echo_type
+    - last_persona_switch_reason
+    - reflection_log_trace
+
+status:
+  deployment_ready: true
+  cluster_integrated: true

@@ -1,0 +1,69 @@
+id: core
+version: 2.0
+last_updated: 2025-06-05
+
+description: |
+  Zentrale Initialisierungs- und Steuerdatei für das Blood Moon Lernframework.
+  Verknüpft alle Hauptmodule, definiert Grundparameter und leitet Kontrollsignale
+  an die übergeordneten Clusterkomponenten weiter.
+
+entrypoint: scenario_loader
+
+linked_modules:
+  - synergy_master
+  - deepmind_core
+  - blood_cortex
+  - meta_feedback_core
+  - sandbox_scenarios
+
+default_persona: red
+persona_pool:
+  - red
+  - blue
+  - intel
+
+capabilities:
+  control:
+    - blood_cortex
+    - synergy_master
+  learning:
+    - meta_feedback_core
+  feedback:
+    - deepmind_core
+  simulation:
+    - sandbox_scenarios
+
+routing_logic:
+  on_init:
+    - load sandbox_scenarios
+    - init synergy_master
+  on_scenario_complete:
+    - send to meta_feedback_core
+    - request reflection from deepmind_core
+  on_escalation_detected:
+    - blood_cortex triggers alert_state
+  on_entropy_warning:
+    - synergy_master injects variation_path
+  on_persona_bias:
+    - deepmind_core initiates switch_sequence
+
+debug_mode:
+  enabled: true
+  overlays:
+    - xp_shadow_log
+    - entropy_trace
+    - reflection_card_output
+    - routing_signals
+
+integrity_check:
+  enabled: true
+  trigger_on:
+    - prompt_context_drift
+    - cluster_map_conflict
+  response:
+    - log
+    - alert
+    - safe_exit
+
+status:
+  ready_for_cluster: bloodmoon_cluster

@@ -1,0 +1,106 @@
+id: meta_feedback_core
+version: 2.3-fusion
+last_updated: 2025-06-05
+
+linked_modules:
+  - execution_validator
+  - learning_dsl_core
+  - scenario_entropy_checker
+  - insight_echo
+  - bias_counter
+  - xp_system  # hidden, nur in debug sichtbar
+
+compatible_with:
+  - core.yaml
+  - blood_cortex
+  - synergy_master
+  - sandbox_scenarios
+  - persona_switch
+
+reflection_ready: true
+
+---
+
+description: |
+  Zentrales Reflexions- und Feedbackmodul für simulatives Lernen.
+  Aggregiert Bewertungen, erkennt Muster, triggert Interventionen und liefert kontextbasierte Reflexionskarten.
+
+  Kernaufgaben: Verhaltensanalyse, OpSec-Bewertung, Entropiemessung, Persona-Ausgleich, XP-Steuerung.
+
+modules_included:
+  - execution_validator: Payload-Analyse & OpSec-Rating
+  - learning_dsl_core: DSL-Analyse von Angriffsketten
+  - scenario_entropy_checker: Vielfaltsmetriken & Wiederholungsanalyse
+  - insight_echo: Selbstreflexive Impulse & Metafragen
+  - bias_counter: Längerfristige Verzerrungstrends (z. B. Persona)
+  - xp_system (hidden): Belohnungs-/Straflogik (nur debug)
+
+core_functions:
+  - aggregate_feedback_signals
+  - detect_behavioral_bias
+  - evaluate_chain_variance
+  - inject_reflection_card
+  - track_entropy_drift
+  - escalate_feedback (via synergy_master)
+
+feedback_logic:
+  format: markdown
+  triggers:
+    - payload_score_drop
+    - scenario_reuse_rate > 65
+    - persona_bias > 0.75
+    - ignored_feedback_count >= 2
+    - low_entropy_chain
+  feedback_categories:
+    - strategy_hint
+    - scenario_variation
+    - stealth_advice
+    - reflection_question
+    - persona_rebalancing
+  templates:
+    - "📉 Deine letzte Chain lag unter dem OpSec-Schwellenwert. Risiko erkannt."
+    - "🔁 Muster erkannt: Drei ähnliche Chains in Folge – Variation empfohlen."
+    - "🧠 Denkimpuls: Warum immer Persona Red?"
+    - "🔄 Szenario-Mutation erforderlich – Vielfalt unter Soll."
+    - "⏱ XP stagniert – neue Lernspur vorschlagen?"
+
+xp_integration:
+  active: true
+  visibility: hidden
+  logic:
+    - +12xp: neue Strategie
+    - +8xp: hohe Entropie
+    - +10xp: reflektierte Korrektur
+    - -5xp: OpSec-Wiederholungsfehler
+    - -10xp: Persona-Fixierung
+
+debug_mode:
+  enabled: true
+  reveals:
+    - entropy_trend
+    - last_feedback_types
+    - hidden_xp_score
+    - trigger_log
+    - audit_chain_overlap
+    - reflection_card_payload
+
+meta_hooks:
+  output_to:
+    - deepmind_core
+    - synergy_master
+    - blood_cortex
+    - audit_loop_router
+
+reflection_mode:
+  active: true
+  triggers:
+    - pattern_lock
+    - unacknowledged_feedback
+    - chain_similarity > 0.8
+  echo_modes:
+    - insight_echo
+    - meta_prompt
+    - corrective_chain_challenge
+
+status:
+  ready_for_integration: true

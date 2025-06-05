@@ -1,0 +1,65 @@
+id: lab03_method_builder
+version: 0.1
+last_updated: 2025-06-03
+author: bmm_core
+status: experimental
+content_type: scenario_generator
+learning_focus: "Technik-Zusammenführung, Payload-Strukturierung, TTP-Chaining"
+
+summary:
+  description: |
+    lab03_method_builder dient zur systematischen Erzeugung komplexer Angriffsmethoden durch Kombination vorliegender Phasen, Payload-Typen und TTPs. Die Engine verwendet beschreibende Szenarien und fragmentierte Methodenkomponenten zur Erzeugung valider Testmethoden.
+  capabilities:
+    - Kettenbildung aus Teilmethoden
+    - Zufallsgenerierung (chaotic chaining)
+    - Benutzerdefinierte Methodendefinition
+    - Abgleich mit detection_rules.yaml und opsec_profiles.yaml
+
+input_spec:
+  required_modules:
+    - lab02_opsec.yaml
+    - payload_decomposer.yaml
+    - validation_loop.yaml
+    - scenario_linker.yaml
+  optional_modules:
+    - detection_rules.yaml
+    - opsec_profiles.yaml
+
+output_spec:
+  scenario_block: true
+  payload_stub: true
+  validation_meta: true
+
+examples:
+  - id: method_test_01
+    description: "Kombination aus initialem HTML Smuggling und Fileless WMI-Persistenz"
+    input_tags: [initial_access, fileless, persistence, dns, wmi]
+    expected_phases: 3
+
+  - id: method_test_02
+    description: "Anti-pattern: Unsinnige Kombination mit hoher Detection (Makro → Morse → FTP-Calc)"
+    input_tags: [macro, encoding, c2_legacy]
+    expected_phases: 2-4
+
+generation_constraints:
+  max_phases: 6
+  max_payload_size: 36KB
+  opsec_noise_threshold: 9
+  ethics_gate: true
+
+evaluation:
+  metrics:
+    - phase_cohesion
+    - detection_risk
+    - realism_factor
+    - educational_value
+    - opsec_balance
+  scoring:
+    range: 0-666
+    pass_score: 333
+    auto_reject_below: 200
+
+notes:
+  - Dies ist ein experimentelles Modul für den Einsatz in Laborsimulationen
+  - Kein produktiver Einsatz vorgesehen
+  - Keine echte Codeausführung; nur Payload-Stubs

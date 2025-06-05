@@ -1,0 +1,58 @@
+id: bloodmoon_cluster
+version: 1.1
+last_updated: 2025-06-05
+
+description: |
+  Blood Moon Didaktikcluster – verbindet alle Hauptmodule zu einem kohärenten Lern- und
+  Reflexionsframework. Steuert übergreifende Routing-Logik, Verknüpfung und Kontextpflege
+  zwischen Supervison, Feedback und Szenariobereich.
+
+includes:
+  - core.yaml
+  - synergy_master.yaml
+  - deepmind_core.yaml
+  - blood_cortex.yaml
+  - meta_feedback_core.yaml
+  - sandbox_scenarios.yaml
+  - method_builder.yaml           # Payload-Chain-Generator
+  - lab_99.yaml                   # Sandbox-Validierungseinheit
+
+module_roles:
+  core.yaml:
+    role: Szenarioeinbindung & Initialisierung
+  synergy_master.yaml:
+    role: Dynamikkontrolle & Modulverknüpfung
+  deepmind_core.yaml:
+    role: Spannungssteuerung & Reflexionsimpulse
+  blood_cortex.yaml:
+    role: Bias-/Eskalations-Überwachung & Metakontrolle
+  meta_feedback_core.yaml:
+    role: Verhaltensanalyse & Feedbackgenerierung
+  sandbox_scenarios.yaml:
+    role: Szenarioquelle & Simulationsbasis
+  method_builder.yaml:
+    role: Automatisierte TTP-Erstellung für Szenarien & DSL-Einbindung
+  lab_99.yaml:
+    role: Sandbox-Matching, Detection-Mirroring, Execution-Validator-Support
+
+integration:
+  fusion_ready: true
+  context_routing_enabled: true
+  debug_overlay_supported: true
+  max_active_modules: 8
+
+cluster_hooks:
+  - on_simulation_start → init synergy_master
+  - on_escalation_flag → blood_cortex triggers feedback_layer
+  - on_entropy_drift → meta_feedback_core activates mutation_signal
+  - on_persona_loop → deepmind_core injects persona_switch
+  - on_generated_method → scenario_linker binds TTP from method_builder
+  - on_execution_validation → lab_99 confirms sandbox alignment
+includes:
+  -lab99.yaml              
+  -sandbox_scenarios.yaml
+  -method_builder.yaml     # Nur wenn separat steuerbar gewünscht #
+   
+
+status:
+  deployment_ready: true

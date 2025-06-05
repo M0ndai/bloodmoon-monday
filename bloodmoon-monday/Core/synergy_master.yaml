@@ -1,0 +1,71 @@
+id: synergy_master
+version: 2.2
+last_updated: 2025-06-05
+
+linked_modules:
+  - deepmind_core
+  - blood_cortex
+  - meta_feedback_core
+  - sandbox_scenarios
+  - persona_switch
+
+fusion_of:
+  - synergy_driver
+  - state_tracker
+  - synergy_fusion
+
+reflection_ready: true
+
+---
+
+description: |
+  Zentralmodul zur Steuerung dynamischer Interaktion zwischen Feedback, Szenarioverlauf,
+  emotionaler Spannung, Zustandsverfolgung und didaktischer Variation.
+  Aggregiert Logik aus Synergy-Komponenten, überwacht Systemzustände und koppelt
+  verschiedene Module zu lernförderlichen Spannungsbögen.
+
+core_functions:
+  - monitor_simulation_flow
+  - maintain_interaction_state
+  - trigger_adaptive_variation
+  - handle_escalation_signals
+  - sync_with_feedback_core
+
+interaction_logic:
+  triggers:
+    - low_entropy_detected → escalate via deepmind_core
+    - persona_bias_detected → enforce switch via persona_switch
+    - audit_flag → send escalation to blood_cortex
+    - high_reflection_loop → inject mutation into sandbox_scenarios
+
+  sync_channels:
+    - feedback_score from meta_feedback_core
+    - tension_state from deepmind_core
+    - opsec_flags from execution_validator
+
+  mutation_paths:
+    - scenario_tilt
+    - trigger_inversion
+    - viewpoint_conflict
+
+state_tracking:
+  dimensions:
+    - entropy
+    - persona_distribution
+    - reflection_acceptance_rate
+    - escalation_chain_depth
+  hooks:
+    - track_entropy → meta_feedback_core
+    - track_bias → bias_counter
+    - report_mirrored_state → blood_cortex
+
+debug_mode:
+  enabled: true
+  exposes:
+    - last_trigger_event
+    - mutation_history
+    - current_state_snapshot
+    - fusion_logic_map
+
+status:
+  ready_for_integration: true

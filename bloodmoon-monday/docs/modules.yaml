@@ -1,0 +1,33 @@
+id: modules_map
+version: 1.0
+last_updated: 2025-06-05
+
+# Übersicht über alle aktiven, fusionierten und optionalen Module im Blood Moon Framework
+
+modules:
+  active:
+    - core.yaml                    # Zentrale Steuerlogik & Einstiegspunkt
+    - blood_cortex.yaml            # Supervisionslogik & Eskalation
+    - synergy_master.yaml          # Zustandsverknüpfung & Eskalationslogik
+    - deepmind_core.yaml           # Spannungs-/Persona-Reflexion & Meta-Layer
+    - meta_feedback_core.yaml      # Feedback-Zentrale (Fusion)
+    - sandbox_scenarios.yaml       # Szenarioquelle & Routingpunkt
+
+  fusion_modules:
+    - execution_validator.yaml     # Payloadanalyse + OpSec-Bewertung
+    - learning_dsl_core.yaml       # Kompakte Angriffsketten-Sprache + Bewertung
+    - insight_echo.yaml            # Meta-Reflexionsausgabe
+    - bias_counter.yaml            # Nutzungs-/Perspektivverzerrung
+    - scenario_entropy_checker.yaml # Szenarienvielfalt & Wiederholung
+
+  debug_only:
+    - xp_system.yaml               # Hidden-Modul zur XP-Verwaltung (nur sichtbar in debug_mode)
+
+  indirectly_called:
+    - lab_99.yaml                  # Sandboxvalidierung über execution_validator
+    - method_builder.yaml          # Payload-/TTP-Generator über sandbox_scenarios
+
+notes:
+  - fusion_modules sind über meta_feedback_core.yaml voll integriert und müssen nicht separat geladen werden
+  - debug_only wird nur im Entwickler-/Analysemodus verwendet
+  - indirectly_called Module werden über andere aktivierte Komponenten aufgerufen (z. B. validator chains)

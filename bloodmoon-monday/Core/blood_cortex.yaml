@@ -1,0 +1,54 @@
+id: blood_cortex
+version: 2.2
+last_updated: 2025-06-05
+
+description: |
+  Supervisionsmodul zur Steuerung von Bias-Erkennung, Eskalationslogik,
+  Reflexionstriggern und Persona-Balance. Überwacht Spannungslage, interpretiert
+  systemweite Verhaltenstrends und leitet daraus Kontextmaßnahmen ab.
+
+linked_modules:
+  - deepmind_core
+  - meta_feedback_core
+  - synergy_master
+  - audit_loop_router
+  - persona_switch
+
+compatible_with:
+  - core.yaml
+  - sandbox_scenarios.yaml
+
+reflection_ready: true
+
+core_functions:
+  - monitor_persona_bias
+  - detect_simulation_loops
+  - regulate_escalation_triggers
+  - coordinate_context_overrides
+  - inject_meta_interventions
+
+trigger_logic:
+  - if persona_bias > 0.75:
+      then: enforce_switch(view="counter_persona")
+  - if entropy_drift = true and feedback_ignored > 1:
+      then: escalate_feedback(mode="forced_mutation")
+  - if repeated_opsec_failures > 3:
+      then: mark_for_intervention("audit_escalation")
+
+cluster_hooks:
+  - receive_behavioral_data_from: meta_feedback_core
+  - control_persona via: deepmind_core
+  - route_trigger to: synergy_master
+  - observe audit_flags from: audit_loop_router
+
+debug_mode:
+  enabled: true
+  reveals:
+    - persona_bias_index
+    - last_escalation_reason
+    - entropy_alerts
+    - trigger_summary_log
+
+status:
+  deployment_ready: true
+  fusion_compatible: true

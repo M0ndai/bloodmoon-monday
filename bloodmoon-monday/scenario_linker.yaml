@@ -1,0 +1,29 @@
+# scenario_linker.yaml
+scenario_linker:
+  id: linker_core
+  version: 0.1
+  description: >
+    Modul zur Verknüpfung mehrerer sandbox_scenarios zu einer logischen Angriffskette.
+    Bewertet OpSec-Wucht über alle Phasen hinweg.
+
+  features:
+    - campaign_builder: true
+    - scenario_chain_validation: true
+    - opsec_burden_calculation: planned
+
+  supported_links:
+    - type: sequential
+      description: "Linear: Phase A → Phase B"
+    - type: conditional
+      description: "Abhängig vom Erfolg eines vorherigen Phasen-Ziels"
+
+  planned_outputs:
+    - full_chain_scorecard
+    - scenario_flow_map (optional Graphviz oder Mermaid)
+
+  development_status: stub
+  linked_modules:
+    - lab_sandbox_engine.yaml
+    - validation_loop.yaml
+    - persona_blue.yaml (optional for defense POV)
+
