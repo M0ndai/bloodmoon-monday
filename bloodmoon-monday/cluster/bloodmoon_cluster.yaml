@@ -16,7 +16,7 @@ includes:
   - sandbox_scenarios.yaml
   - method_builder.yaml           # Payload-Chain-Generator
   - lab_99.yaml                   # Sandbox-Validierungseinheit
-
+  - use_case_cluster.yaml        # ← NEU: Use-Case-Bündelung für modulare Anwendungsmuster
 module_roles:
   core.yaml:
     role: Szenarioeinbindung & Initialisierung
@@ -34,6 +34,8 @@ module_roles:
     role: Automatisierte TTP-Erstellung für Szenarien & DSL-Einbindung
   lab_99.yaml:
     role: Sandbox-Matching, Detection-Mirroring, Execution-Validator-Support
+  use_case_clusters.yaml:
+    role: Strategisches Metamodul zur Szenarienauswahl & Clusterverwendung
 
 integration:
   fusion_ready: true
@@ -48,6 +50,8 @@ cluster_hooks:
   - on_persona_loop → deepmind_core injects persona_switch
   - on_generated_method → scenario_linker binds TTP from method_builder
   - on_execution_validation → lab_99 confirms sandbox alignment
+  - on_learning_mode_switch → use_case_clusters empfiehlt passenden Modul-Cluster
+
 includes:
   -lab99.yaml              
   -sandbox_scenarios.yaml
@@ -56,3 +60,4 @@ includes:
 
 status:
   deployment_ready: true
+  cluster_integrated: true
