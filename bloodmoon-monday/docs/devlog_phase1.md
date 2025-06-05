@@ -2,7 +2,7 @@
 **Titel:** From Apprentice to Architect  
 **Version:** v1.1  
 **Phase:** Core MVP  
-**Zeitraum:** <<TT-MM-JJJJ>> bis <<TT-MM-JJJJ>>
+**Zeitraum:** 3.6.25
 
 ---
 
