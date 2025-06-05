@@ -742,25 +742,12 @@ sandbox_scenarios:
             curl --cookie sessionid=abc123 https://portal.company.local/
             # END_SIMULATED_PAYLOAD
 
-
-
-
-
-
     timeline:
     - time: T+0s
       phase: Initial Access
     - time: T+45s
       phase: Persistence
 
-    control_flow:
-    branches: []
-    failure: []
-
-
-
-
-  # Reserved: optional branching logic for future phase 3
     control_flow:
     branches: []
     failure: []
