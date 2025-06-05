@@ -93,15 +93,15 @@ It’s a reflexive escalation system designed to detect your thinking—and push
       2. Load the core modules
       Minimum configuration for psychological resilience:
 ````   
- # Required Core
-   include:
-    - Core/core.yaml
-    - Core/blood_cortex.yaml
-    - Core/meta_feedback_core.yaml
-    - Core/deepmind_core.yaml
-    - Core/synergy_master.yaml
-    
-     3. Load the cluster logic
+       # Required Core
+         include:
+          - Core/core.yaml
+          - Core/blood_cortex.yaml
+          - Core/meta_feedback_core.yaml
+          - Core/deepmind_core.yaml
+          - Core/synergy_master.yaml
+          
+            3. Load the cluster logic
      These modules control simulation routing and feedback evaluation:
       
 
