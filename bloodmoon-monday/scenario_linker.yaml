@@ -1,4 +1,3 @@
-# scenario_linker.yaml
 scenario_linker:
   id: linker_core
   version: 0.1
