@@ -35,37 +35,6 @@ It’s a **reflexive escalation system** designed to detect your thinking — an
 
 ---
 
-### 📁 Project Structure (v1.0 Core Bundle)
-
-```bash
-bloodmoon-monday/
-├── Core/
-│   ├── core.yaml                 # Core logic & simulation config
-│   ├── blood_cortex.yaml         # Bias/emotion analysis module
-│   ├── meta_feedback_core.yaml   # XP & feedback engine
-│   ├── deepmind_core.yaml        # Repetition/bias tracking
-│   ├── synergy_master.yaml       # Cluster/scenario coordination
-│   └── sys01_gpt_prompt.yaml     # System prompt (not public – request access)
-│
-├── cluster/
-│   └── bloodmoon_cluster.yaml    # Module orchestration & routing
-│
-├── lab/
-│   └── lab_sandbox_engine.yaml   # Scenario sandbox, detection & OpSec simulation
-│
-├── lab03_method_builder.yaml     # Scenario generator for chain logic
-├── scenario_linker.yaml          # Chain sequencing of adversarial phases
-├── exploit_lib.yaml              # Annotated pseudocode (non-functional)
-├── rep01_template.md             # Markdown template for reflection reporting
-│
-├── docs/
-│   ├── install.md                # Installation guide
-│   ├── help.md                   # Commands, flags, XP logic
-│   ├── post_mortem.md            # Phase 1–3 final reflection
-│   └── modules.yaml              # Optional: Full module list
-│
-└── readme.md                     # This file
-```
 
 > *Note: The system is modular.*
 > *What you don’t load still observes you.*
